@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace SleepData
 {
@@ -51,7 +52,7 @@ namespace SleepData
                     // add 1 week to date
                     dataDate = dataDate.AddDays(7);
                 }
-                sw.close();
+                sw.Close();
             }
             else if (resp == "2")
             {
