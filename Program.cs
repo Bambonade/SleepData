@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using NLog.Web;
 
 namespace StringInterpolation
 {
@@ -7,6 +8,13 @@ namespace StringInterpolation
     {
         static void Main(string[] args)
         {
+            string path = Directory.GetCurrentDirectory() + "\\nlog.config";
+
+            // create instance of Logger
+            var logger = NLog.Web.NLogBuilder.ConfigureNLog(path).GetCurrentClassLogger();
+
+            logger.Info("Program started");
+
             // ask for input
             Console.WriteLine("Enter 1 to create data file.");
             Console.WriteLine("Enter 2 to parse data.");
@@ -18,11 +26,18 @@ namespace StringInterpolation
             {
                 // TODO: create data file
                 // create data file
-
+                bool isValidNumberOfWeeks = false;
+                int weeks = 0;
+                while(!isValidNumberOfWeeks){
                  // ask a question
                 Console.WriteLine("How many weeks of data is needed?");
                 // input the response (convert to int)
-                int weeks = int.Parse(Console.ReadLine());
+                if (int.TryParse(Console.ReadLine(), out weeks)){
+                    isValidNumberOfWeeks = true;
+                }else{
+                    logger.Error("Invalid input");
+                }
+                }
                 // determine start and end date
                 DateTime today = DateTime.Now;
                 // we want full weeks sunday - saturday
@@ -89,6 +104,7 @@ namespace StringInterpolation
                 }
                 sr.Close();
             }
+            logger.Info("Program ended");
         }
     }
 }
