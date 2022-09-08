@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace SleepData
+namespace StringInterpolation
 {
     class Program
     {
