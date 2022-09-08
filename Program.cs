@@ -16,13 +16,13 @@ namespace SleepData
 
             if (resp == "1")
             {
+                // TODO: create data file
                 // create data file
 
                  // ask a question
                 Console.WriteLine("How many weeks of data is needed?");
                 // input the response (convert to int)
                 int weeks = int.Parse(Console.ReadLine());
-
                 // determine start and end date
                 DateTime today = DateTime.Now;
                 // we want full weeks sunday - saturday
@@ -33,9 +33,8 @@ namespace SleepData
                 // random number generator
                 Random rnd = new Random();
 
-                // create file
+                                // create file
                 StreamWriter sw = new StreamWriter("data.txt");
-
                 // loop for the desired # of weeks
                 while (dataDate < dataEndDate)
                 {
@@ -57,7 +56,38 @@ namespace SleepData
             else if (resp == "2")
             {
                 // TODO: parse data file
+                StreamReader sr = new StreamReader("data.txt");
+                while (!sr.EndOfStream) {
+                    //Input
+                    string data = sr.ReadLine();
 
+                    //Date formating
+                    string[] split = data.Split(',');
+
+                    //Delimitter
+                    string[] dataSplit = split[1].Split('|');
+
+                    //Parsing data
+                    var parseDate = DateTime.Parse(split[0]);
+                    int[] intData = new int[dataSplit.Length];
+                    for (int i = 0; i < dataSplit.Length; i++) {
+                        intData[i] = Int32.Parse(dataSplit[i]);
+                    }
+                    //Total
+                    int total = intData[0] + intData[1] + intData[2] + intData[3] + intData[4] + intData[5] + intData[6];
+                    double totalDouble = Convert.ToDouble(total);
+                    //Average
+                    double average = totalDouble / 7;
+
+                    //Print weekly output
+                    Console.WriteLine("Week of {0:MMM}, {0:dd}, {0:yyyy}", parseDate);
+                    Console.WriteLine("Su Mo Tu We Th Fr Sa Tot Avg");
+                    Console.WriteLine("-- -- -- -- -- -- -- --- ---");
+                    //Shifted output to be Sunday - Saturday instead of Monday - Sunday
+                    Console.WriteLine("{3,2} {0,2} {1,2} {2,2} {4,2} {5,2} {6,2} {7,3} {8,3:n1}", dataSplit[0], dataSplit[1], dataSplit[2], dataSplit[3], dataSplit[4], dataSplit[5], dataSplit[6], total, average);
+
+                }
+                sr.Close();
             }
         }
     }
